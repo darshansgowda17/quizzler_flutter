@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler_flutter/quizbrain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(Quizzler());
 
@@ -25,12 +28,10 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Widget> scoreKeeper = [
-    Icon(Icons.check,color: Colors.green,),
-    Icon(Icons.cancel,color: Colors.red,),
-    Icon(Icons.check,color: Colors.green,)
+  List<Widget> scoreKeeper = [];
+  int questionNumber = 0;
 
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,7 +44,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                quizBrain.questionBank[questionNumber].question!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -58,12 +59,18 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(15.0),
             child: GestureDetector(
                 onTap: () {
+                  bool ans = quizBrain.questionBank[questionNumber].answer!;
                   setState(() {
-                    scoreKeeper.add(Icon(Icons.check,color: Colors.green,));
+                    if (ans == true){
+                      scoreKeeper.add(Icon(Icons.check,color: Colors.green,));
+                    } else {
+                      scoreKeeper.add(Icon(Icons.cancel,color: Colors.red,),);
+                    };
+                    questionNumber += 1;
                   },);
     },
             child: Container(
-                color: Colors.red,
+                color: Colors.green,
                 child: Center(
                   child: Text(
                     "True",
@@ -81,8 +88,14 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(15.0),
             child: GestureDetector(
               onTap: () {
+                bool ans = quizBrain.questionBank[questionNumber].answer!;
                 setState(() {
-                  scoreKeeper.add(Icon(Icons.cancel,color: Colors.red,),);
+                  if (ans == false){
+                    scoreKeeper.add(Icon(Icons.check,color: Colors.green,));
+                  } else {
+                    scoreKeeper.add(Icon(Icons.cancel,color: Colors.red,),);
+                  };
+                  questionNumber += 1;
                 });
               },
               child: Container(
